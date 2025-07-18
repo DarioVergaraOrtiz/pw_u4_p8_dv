@@ -1,7 +1,14 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
-import EstudianteView from '../views/EstudianteView.vue'
 import LoginView from '../views/LoginView.vue'
+
+import AboutView from '../views/AboutView.vue'
+import EstudianteView from '../views/EstudianteView.vue'
+import NotasIngresoView from '../views/NotasIngresoView.vue'
+import RecursoProhibidoView from '../views/RecursoProhibidoView.vue'
+
+
+import {obtenerPaginasPermitidas} from '../helpers/autorizacion.js'
 
 function estaAutenticado(){
   return localStorage.getItem('auth') === 'true';
@@ -20,6 +27,38 @@ const routes = [
     path: '/login',
     name: 'login',
     component: LoginView
+  },
+    {
+    path: '/about',
+    name: 'about',
+    component: AboutView,
+      meta: {
+      requiereAuth: true 
+    }
+  },
+    {
+    path: '/estudiante',
+    name: 'estudiante',
+    component: EstudianteView,
+    meta: {
+      requiereAuth: true
+    }
+  },
+    {
+    path: '/notas',
+    name: 'notas',
+    component: NotasIngresoView,
+    meta: {
+      requiereAuth: true
+    }
+  },
+      {
+    path: '/403',
+    name: '403',
+    component: RecursoProhibidoView,
+    meta: {
+      requiereAuth: true
+    }
   }
 ]
 
@@ -34,7 +73,13 @@ router.beforeEach((to, from, next) => {
     if(!estaAutenticado()){
       next('/login')
     }else{
-      next();
+      let usuario = localStorage.getItem('usuario');
+      let paginas = obtenerPaginasPermitidas(usuario);
+      if(paginas.includes(to.path)){
+        next();
+      }else{
+        next('/403');
+      }
     }
   }else {
     next();

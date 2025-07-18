@@ -19,8 +19,8 @@ export default {
     },
     methods: {
         login(){
-            if(this.username === "admin" && this.password === "123") {
-                localStorage.setItem('usuario', 'admin');
+            if((this.username === "admin" || this.username === "estudiante") && this.password === "123") {
+                localStorage.setItem('usuario', this.username);
                 localStorage.setItem('auth', 'true'); //Bandera que me indique al sistema que se autentico
                 //Redireccionar a la página de bienvenida
                 this.$router.push('/home');
