@@ -5,7 +5,12 @@ const URL_API = 'http://localhost:8081/api/matricula/v1/estudiantes';
 //Guardar
 
 const guardar = async (body) =>{
-    const data = axios.post(URL_API, body).then(r => r.data);
+    let token = ''
+    const data = axios.post(URL_API, body, {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    }).then(r => r.data);
     console.log(data);
 }
 
