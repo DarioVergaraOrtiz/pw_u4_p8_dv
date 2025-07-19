@@ -2,48 +2,45 @@ import axios from "axios";
 
 const URL_API = 'http://localhost:8081/api/matricula/v1/estudiantes';
 
-//Guardar
+// Guardar
+const guardar = async (body) => {
+    const { data } = await axios.post(URL_API, body);
+    return data;
+};
 
-const guardar = async (body) =>{
-    const data = axios.post(URL_API, body).then(r => r.data);
-    console.log(data);
-}
+// Actualizar completo
+const actualizar = async (id, body) => {
+    const { data } = await axios.put(`${URL_API}/${id}`, body);
+    return data;
+};
 
-//Actualizar
+// Actualizar parcial
+const actualizarParcial = async (id, body) => {
+    const { data } = await axios.patch(`${URL_API}/${id}`, body);
+    return data;
+};
 
-const actualizar = async (id, body) =>{
-    const data = axios.put(`${URL_API}/${id}`, body).then(r => r.data);
-    console.log(data);
-} 
+// Borrar
+const borrar = async (id) => {
+    const { data } = await axios.delete(`${URL_API}/${id}`);
+    return data;
+};
 
-//Actualizar Parcial
+// Consultar todos SIN filtros
+const consultarTodos = async () => {
+    const { data } = await axios.get(URL_API);
+    return data;
+};
 
-const actualizarParcial = async (id, body) =>{
-    const data = axios.patch(`${URL_API}/${id}`, body).then(r => r.data);
-    console.log(data);
-}
+// Consultar por ID (GET /estudiantes/{id})
+const consultarPorId = async (id) => {
+    const { data } = await axios.get(`${URL_API}/${id}`);
+    return data; // EstudianteTo
+};
 
-//Borrar
-
-const borrar = async (id) =>{
-    const data = axios.delete(`${URL_API}/${id}`).then(r => r.data);
-    console.log(data);
-}
-
-//fachadas
-
-export const guardarFachada = async (body) =>{
-    await guardar(body);
-}
-
-export const actualizarFachada = async (id, body) =>{
-    await actualizar(id, body);
-}
-
-export const actualizarParcialFachada = async (id, body) =>{
-    await actualizarParcial(id, body);
-}
-
-export const borrarFachada = async (id) =>{
-    await borrar(id);
-}
+export const guardarFachada = async (body) => guardar(body);
+export const actualizarFachada = async (id, body) => actualizar(id, body);
+export const actualizarParcialFachada = async (id, body) => actualizarParcial(id, body);
+export const borrarFachada = async (id) => borrar(id);
+export const consultarTodosFachada = async () => { return await consultarTodos(); };
+export const consultarPorIdFachada = async (id) => consultarPorId(id);
