@@ -2,11 +2,12 @@ import axios from "axios";
 
 const URL_API = 'http://localhost:8081/api/matricula/v1/estudiantes';
 
-// Guardar
-const guardar = async (body) => {
-    const { data } = await axios.post(URL_API, body);
-    return data;
-};
+//Guardar
+
+const guardar = async (body) =>{
+    const data = axios.post(URL_API, body).then(r => r.data);
+    console.log(data);
+}
 
 // Actualizar completo
 const actualizar = async (id, body) => {
